@@ -1,3 +1,5 @@
+import { loginTodos } from '/api.js'
+
 export function loginFinction({ appEl, setToken, fetchTodosAndRender }) {
     const appHtml = `
         <h1>Список задач</h1>
@@ -28,7 +30,15 @@ export function loginFinction({ appEl, setToken, fetchTodosAndRender }) {
       const logBtn = document.getElementById('login-button');
       logBtn.addEventListener('click', () => {
 
-        setToken('Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k')
-        fetchTodosAndRender();
+        setToken('Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k');
+
+        loginTodos({
+            login: 'admin',
+            password: 'admin'
+        }).then((user) => {
+            setToken(`Bearer ${user.user.token}`);
+            
+            fetchTodosAndRender();
+        })
       });
 }

@@ -42,3 +42,16 @@ export function postTodos({ token, text }) {
           return response.json();
         })
 }
+
+export function loginTodos({ login, password }) {
+    return fetch('https://webdev-hw-api.vercel.app/api/user/login', {
+        method: "POST",
+        body: JSON.stringify({
+          login,
+          password
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+}
