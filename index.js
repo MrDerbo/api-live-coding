@@ -1,21 +1,12 @@
+import { deleteTodos, getTodos, postTodos } from "./api.js";
+ 
 let tasks = [];
     const host = 'https://webdev-hw-api.vercel.app/api/v2/todos';
     let token = 'Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k';
     token = null;
 
     const fetchTodosAndRender = () => {
-      return fetch(host, {
-        method: "GET",
-        headers: {
-            Authorization: token,
-        }
-      })
-        .then((response) => {
-            if (response.status === 401) {
-                throw new Error('Нет авторизации')
-            }
-          return response.json();
-        })
+      return getTodos({ token })
         .then((responseData) => {
           tasks = responseData.todos;
           renderApp();
@@ -107,15 +98,7 @@ let tasks = [];
 
           const id = deleteButton.dataset.id;
 
-          fetch("https://webdev-hw-api.vercel.app/api/todos/" + id, {
-            method: "DELETE",
-            headers: {
-                Authorization: token,
-            }
-          })
-            .then((response) => {
-              return response.json();
-            })
+          deleteTodos({ id, token })
             .then((responseData) => {
               tasks = responseData.todos;
               renderApp();
@@ -131,18 +114,10 @@ let tasks = [];
         addButton.disabled = true;
         addButton.textContent = "Задача добавляется...";
 
-        fetch(host, {
-          method: "POST",
-          body: JSON.stringify({
+        postTodos({
             text: textInput.value,
-          }),
-          headers: {
-              Authorization: token,
-          },
+            token
         })
-          .then((response) => {
-            return response.json();
-          })
           .then(() => {
             textInput.value = "";
           })
